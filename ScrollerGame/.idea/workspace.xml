@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4fb61d91-a3f7-411f-aa91-8c73c99225f0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/ceva/TestSprite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/out.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ceva/Helicopter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ceva/IKeyCallback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ceva/KeyBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScrollerGame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ScrollerGame.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/explosion.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/explosion.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/foe-heli.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/foe-heli.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/heli-crash.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/heli-crash.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/heli.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/heli.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ceva/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/Sprite.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +18,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -40,24 +35,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Test/local-projects/IntellijProjects/JavaHelicopterGame/ScrollLibGame",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.248503",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Test/local-projects/IntellijProjects/JavaHelicopterGame/ScrollLibGame&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.248503&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Test\local-projects\IntellijProjects\JavaHelicopterGame\ScrollerGame\src\com\ceva" />
@@ -97,7 +92,10 @@
       <workItem from="1697560192981" duration="664000" />
       <workItem from="1697560871273" duration="23000" />
       <workItem from="1697571480227" duration="3790000" />
-      <workItem from="1697575973298" duration="2363000" />
+      <workItem from="1697575973298" duration="2981000" />
+      <workItem from="1698075054869" duration="901000" />
+      <workItem from="1698168370719" duration="594000" />
+      <workItem from="1698330997912" duration="5650000" />
     </task>
     <servers />
   </component>
