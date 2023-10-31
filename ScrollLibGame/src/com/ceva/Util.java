@@ -20,6 +20,20 @@ public class Util {
         return (x + (rand() % (y - x + 1)));
     }
 
+    public static int intTo12Bit(int n) {
+        n = n & 0xfff;
+        return n;
+    }
+
+    public static int cvt12BitToInt(int n) {
+        if ((n & 0x800) != 0) {
+            n = (~n + 1) & 0xfff;
+            return -n;
+        }
+        n = n & 0xfff;
+        return n;
+    }
+
     /*
     Open a file and return an InputStream.
 
