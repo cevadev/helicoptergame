@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4fb61d91-a3f7-411f-aa91-8c73c99225f0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/ceva/Screen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/ceva/ScrollLevel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/ceva/TestLevel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ScrollLibGame/src/com/ceva/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ScrollLibGame/src/com/ceva/Util.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ceva/Bullet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/ceva/FoeHeli.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -112,7 +110,8 @@
       <workItem from="1698168370719" duration="594000" />
       <workItem from="1698330997912" duration="5650000" />
       <workItem from="1698762328758" duration="4463000" />
-      <workItem from="1698768085297" duration="912000" />
+      <workItem from="1698768085297" duration="1753000" />
+      <workItem from="1698935356176" duration="4104000" />
     </task>
     <servers />
   </component>
