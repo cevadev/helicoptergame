@@ -148,6 +148,7 @@ public class Helicopter extends Sprite{
             // validamos si presiona la tecla control (tecla disparo)
             if (keyboard.keyPressed(KeyEvent.VK_CONTROL)) {
                 // disparo desde el frente del helicopter
+                // state==0 es una bala del helicoptero, es decir, el bit foe no esta activo
                 game.fireBullet(x+width, y+height/2, 8, 0, 0);
                 // ya no recibimos notificacion que control ha sido presionado hasta que se libere la key
                 keyboard.ignoreKey(KeyEvent.VK_CONTROL);

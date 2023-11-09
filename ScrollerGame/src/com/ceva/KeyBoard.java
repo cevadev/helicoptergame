@@ -20,6 +20,13 @@ public class KeyBoard {
     // map que maneja eventos de la tecla liberada
     private final Map<Integer,KeyEventNode> keyReleasedCallbackMap = new HashMap<>();
 
+    public KeyBoard(JPanel ownerPanel) {
+        this.ownerPanel = ownerPanel;
+
+//        keyListener = new KeyboardKeyAdapter();
+//        ownerPanel.addKeyListener(keyListener);
+    }
+
     /**
      * Cuando se produce un evento, el metodo keyEvent sera invocado
      */
@@ -53,6 +60,10 @@ public class KeyBoard {
     public void ignoreKey(int keyCode) {
         int code = keyCodeMap.getOrDefault(keyCode, KBD_RELEASED);
         keyCodeMap.put(keyCode, code | KBD_IGNORED);
+    }
+
+    public void close() {
+//        ownerPanel.removeKeyListener(keyListener);
     }
 
     /**

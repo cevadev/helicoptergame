@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4fb61d91-a3f7-411f-aa91-8c73c99225f0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/ceva/HeliGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ceva/FoeHeli.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/FoeHeli.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ceva/HeliGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/HeliGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ceva/Helicopter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/Helicopter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ceva/KeyBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/KeyBoard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,6 +129,7 @@
       <workItem from="1698768085297" duration="1753000" />
       <workItem from="1698935356176" duration="4104000" />
       <workItem from="1699367463481" duration="7383000" />
+      <workItem from="1699538968065" duration="8276000" />
     </task>
     <servers />
   </component>

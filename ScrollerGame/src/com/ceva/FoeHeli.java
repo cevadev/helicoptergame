@@ -32,7 +32,8 @@ public class FoeHeli extends Sprite{
         width = 64;
         height = width;
         this.disabledFire = disabledFire;
-        // bounds-> area que representa el helicopter
+        // bounds-> area que representa el helicopter. Inicia en 0 y ancho de 64 px
+        // horizontalmente bounds ocupa el mismo espacio que el sprite.
         bounds = new Rectangle(0, 22, 64, 20);
         // iniciamos la secuencia de imagenes
         if (images == null)
