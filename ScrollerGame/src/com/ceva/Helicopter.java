@@ -8,6 +8,10 @@ public class Helicopter extends Sprite{
     private int pauseFramesLeft;
     private Screen screen;
     private KeyBoard keyboard;
+
+    // modo invensible
+    private static final boolean godMode = false;
+
     // donde cada constante representa un bit izq, derecha, arriba, abajo
     private static int JLEFT  = 1;
     private static int JRIGHT = 2;
@@ -97,7 +101,8 @@ public class Helicopter extends Sprite{
 
     @Override
     public void hitDetected() {
-        setState(STATE_DYING);
+        if(!godMode)
+            setState(STATE_DYING);
     }
 
     /**

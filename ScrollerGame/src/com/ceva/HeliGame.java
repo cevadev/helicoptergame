@@ -64,9 +64,11 @@ public class HeliGame extends JPanel implements Runnable{
         scrollLevel = ScrollLevel.createPlainLevel(screen, screen.getWidth()*3/2+30, 1);
         // listener que se activa cuando presionamos scape, pasamos un callback
         keyboard.addKeyPressedListener(KeyEvent.VK_ESCAPE, (evt) -> {
-            // cuando player presione escape doneFlag true y se temrina el juego
+            // cuando player presione escape doneFlag true
             doneFlag = true;
+            // validamos si el juego esta en pausa
             if (onPause)
+                // notify al thread del juego que salga de la pausa
                 resumeGame();
         });
         // listener que se activa cuando presiona ALT
@@ -97,6 +99,7 @@ public class HeliGame extends JPanel implements Runnable{
         screen.done();
 
         JFrame jFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        System.out.println(jFrame.getName());
         jFrame.dispose();
     }
 
@@ -237,6 +240,9 @@ public class HeliGame extends JPanel implements Runnable{
         }
     }
 
+    /*
+     * Reiniciamos el juego luego de perder una vida
+     */
     public void restartLevel() {
         // Desactivar enemigos
         for (Sprite s : foes) {
@@ -253,6 +259,7 @@ public class HeliGame extends JPanel implements Runnable{
         scrollLevel.curXLevel = 0;
         scrollLevel.curFoePtr = scrollLevel.foeList;
         if (scrollLevel.next != null) {
+            // iniciamos los enemigos
             scrollLevel.next.curFoePtr = scrollLevel.next.foeList;
         }
 
@@ -265,11 +272,13 @@ public class HeliGame extends JPanel implements Runnable{
 
         heli.setState(Sprite.STATE_ACTIVE);
         heli.x = 10;
+        // centramos el helicoptero
         heli.y = (screen.getHeight()/2) + heli.bounds.y - heli.bounds.height/2;
     }
 
     private void addNewFoes(ScrollLevel lvl, int offset) {
         int screenWidth = screen.getWidth();
+        // curFoePtr -> lista enlazada que contiene a los enemigos del juego
         while ((lvl.curFoePtr != null) && (lvl.curFoePtr.x+offset <= (scrollLevel.curXLevel+screenWidth))) {
             System.out.printf("Create enemy. curXLevel:%d, curXLevel+width:%d, curFoePtr.x=%d, curFoePtr.y=%d\n",
                     scrollLevel.curXLevel, scrollLevel.curXLevel+screenWidth, lvl.curFoePtr.x, lvl.curFoePtr.y);
@@ -277,9 +286,11 @@ public class HeliGame extends JPanel implements Runnable{
             FoeHeli fh = new FoeHeli(this, lvl.curFoePtr.x + offset - scrollLevel.curXLevel, lvl.curFoePtr.y,
                     lvl.curFoePtr.ai, lvl.curFoePtr.health, Sprite.STATE_ACTIVE, -2,
                     lvl.curFoePtr.disabledFire);
+            // agregamos el enemigo al juego
             foes.add(fh);
-
+            // lista enlazada
             lvl.curFoePtr = lvl.curFoePtr.next;
+            // validamos si se terminaron los enemigos o la coordenada del enemigo es mayor al limite de pantalla
             if ((lvl.curFoePtr == null) || (lvl.curFoePtr.x+offset > (scrollLevel.curXLevel+screenWidth)))
                 break;
         }
@@ -291,32 +302,48 @@ public class HeliGame extends JPanel implements Runnable{
      * con el jugador
      */
     private void doEnemies() {
-        // agregamos los enemigos que aparecen
+        // agregamos los enemigos que aparecen en el nivel actual
         addNewFoes(scrollLevel, 0);
+        /**
+         * validamos si el nuevel actual se muestra a la mitad pero aun queda otro pedazo del nivel
+         * entonces revisamos si necesitamos incluir a los enemigos que vienen en el sgte nivel
+         */
         if ((scrollLevel.curXLevel+screen.getWidth() > scrollLevel.width) && (scrollLevel.next != null)) {
             addNewFoes(scrollLevel.next, scrollLevel.width);
         }
 
+        /**
+         * Manejo de la colision con el jugados. validamos si el helicoptero esta activo
+         */
         if (heli.state == Sprite.STATE_ACTIVE) {
+            // rectangulo del helicoptero
             Rectangle hBounds = new Rectangle(heli.x + heli.bounds.x, heli.y + heli.bounds.y, heli.bounds.width, heli.bounds.height);
+            // verificamos si hay colision con el jugador
             for (Iterator<Sprite> it = foes.iterator(); it.hasNext(); ) {
+                // si hay colision el helicoptero del jugador pierde
                 Sprite s = it.next();
                 s.nextFrame();
+                // revisamos si esta inactivo
                 if (s.state == Sprite.STATE_INACTIVE) {
+                    // lo quitamos de la coleccion
                     it.remove();
                     continue;
                 } else if (s.state == Sprite.STATE_ACTIVE) {
-                    // Checar colision con jugador
+                    // Checar colision con jugador. lo detectamos con una interseccion de rectangulos
+                    // rectangulo del sprite
                     Rectangle sBounds = new Rectangle(s.x + s.bounds.x, s.y + s.bounds.y, s.bounds.width, s.bounds.height);
+                    // validamos si el rectangulo del helicoptero intersepta al sprite
                     if (hBounds.intersects(sBounds)) {
-                        heli.hitDetected();
+                        heli.hitDetected(); // informamos que se produjo una colision
                         if (heli.state != Sprite.STATE_ACTIVE)
                             continue;
                     }
                 }
             }
         } else {
+            // helicptero no activos, es decir, muerto
             for (Sprite s : foes)
+                // continua la animacion de enemigos
                 s.nextFrame();
         }
     }
@@ -399,6 +426,7 @@ public class HeliGame extends JPanel implements Runnable{
         IKeyCallback callback = (e) -> {
             onPause = !onPause;
             if (!onPause)
+                // continuamos con el thread del juego
                 resumeGame();
         };
         keyboard.addKeyPressedListener(KeyEvent.VK_PAUSE, callback);
@@ -420,6 +448,8 @@ public class HeliGame extends JPanel implements Runnable{
     @Override
     protected void paintComponent(Graphics g) {
         screen.paint((Graphics2D)g);
+        // validamos si onPause == true, entonces no enviamos notify y el thread del juego se
+        // quedara esperando
         if (!onPause) {
             synchronized(this) {
                 // continua el thread de la animacion
@@ -434,7 +464,7 @@ public class HeliGame extends JPanel implements Runnable{
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setResizable(false);
             frame.addWindowListener(new WindowAdapter() {
-                private boolean windowPaused;
+                private boolean windowPaused; // el juego esta pausado a causa de la ventana o no
                 // se ejecuta el metodo cuando se abre la ventana
                 @Override
                 public void windowOpened(WindowEvent e) {
@@ -447,19 +477,25 @@ public class HeliGame extends JPanel implements Runnable{
                     pausa y cambia de ventana, cuando regrese deberia continuar
                     en pause.
                     */
+                    // validamos si no fue la ventana quien hizo la pausa
                     if (!windowPaused)
                         return;
 
+                    // si el juego esta en pausa
                     if (panel.onPause) {
-                        panel.onPause = false;
+                        panel.onPause = false; // quitamos la pausa
                         panel.resumeGame();
                     }
+                    // cuando se activa la ventana windowPaused es true
                     windowPaused = false;
                 }
                 @Override
                 public void windowDeactivated(WindowEvent e) {
+                    // validamos q el jueg no este en pausa
                     if (!panel.onPause) {
+                        // lo ponemos en pausa
                         panel.onPause = true;
+                        // indicamos que fue la ventana que lo puso en pausa
                         windowPaused = true;
                     }
                 }

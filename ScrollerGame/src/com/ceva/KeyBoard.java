@@ -19,12 +19,12 @@ public class KeyBoard {
     private final Map<Integer,KeyEventNode> keyPressedCallbackMap = new HashMap<>();
     // map que maneja eventos de la tecla liberada
     private final Map<Integer,KeyEventNode> keyReleasedCallbackMap = new HashMap<>();
+    KeyboardKeyAdapter keyListener;
 
     public KeyBoard(JPanel ownerPanel) {
         this.ownerPanel = ownerPanel;
-
-//        keyListener = new KeyboardKeyAdapter();
-//        ownerPanel.addKeyListener(keyListener);
+        keyListener = new KeyboardKeyAdapter();
+        ownerPanel.addKeyListener(keyListener);
     }
 
     /**
