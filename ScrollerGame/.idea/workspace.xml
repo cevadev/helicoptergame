@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4fb61d91-a3f7-411f-aa91-8c73c99225f0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ceva/HeliGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/HeliGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ceva/Helicopter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/Helicopter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ceva/KeyBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/KeyBoard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +46,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.248503&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -130,7 +127,12 @@
       <workItem from="1699367463481" duration="7383000" />
       <workItem from="1699538968065" duration="8384000" />
       <workItem from="1699969038728" duration="342000" />
-      <workItem from="1699969791695" duration="6024000" />
+      <workItem from="1699969791695" duration="6800000" />
+      <workItem from="1699987263708" duration="7000" />
+      <workItem from="1699987489374" duration="31000" />
+      <workItem from="1699987594988" duration="44000" />
+      <workItem from="1699987727114" duration="77000" />
+      <workItem from="1699987873652" duration="85000" />
     </task>
     <servers />
   </component>
