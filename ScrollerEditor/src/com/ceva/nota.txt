@@ -1,0 +1,46 @@
+LevelEditorModel
+Representa el modelo de la aplicacion, contiene la informacion del modelo que se esta
+editando y el estado en el que se encuentra la app.
+La clase LevelEditorModele sta desacoplado del controlador y de la vista pero la vista
+puede registrarse como un observador en cuyo caso el modelo le informara cada vez que los
+datos o el estado hayan cambiado.
+
+LevelView
+Clase que representa la vista. Hay otras clases que se consideran parte de la vista como
+MainFrame2 pero LevelView se encarga de manejar lo que sucede con el area de edicion de niveles
+asi como controlar la barra de desplazamiento vertical y horizontal.
+
+Cuando el user mueve el raton, hace click o selecciona una comando o presiona un boton la vista
+informa al controlador para que este realice la accion correspondiente.
+
+LevelEditorController
+Es el controlador principal de la aplicacion. Se encarga de realizar la acciones del usuario que le
+son informadas por medio de la vista. Estas acciones normalmente implicam realizar acciones en el
+modelo. Cuenta con una refrencia al model y vista.
+
+CreateLevelDialog y DlgSetupFoe
+Son dialogos que se muestran para que el usuario ingrese los nuevos parametros para la creacion
+de un nuevo nivel o para configurar a un enemigo.
+
+FreeToolController, LineToolController, HeliController
+Controladores secundarios que contienen respectivamente el codigo para editar el terreno
+libremente, para editarlo con lineas y para editar a un enemigo.
+
+Los controladores anteriores estan derivados de EventController que es una clase abstraca
+con los metodos para manejar cada evento.
+
+StatusBarView
+Esta clase forma parte de la vista, representa la barra de estado que se muestra en la parte
+inferior de la ventana. Se utiliza para mostrar que herramienta esta en uso como el tamano
+del nivel, la posicion de raton y otros datos
+
+ModelObserver
+Interface por medio de la cual el modelo informa a sus observadores sobre cambios. Esta interface
+es sencilla cuenta con dos metodos para redibujar y establecer un nuevo tamano cuando se crea
+o se carga un nuevo nivel.
+
+MainFrame
+Clase derivada de JFrame que forma parte de la vista y tiene como funcion proveer la pantalla
+principal y todos los controles y vistas que utiliza el programa e informar al controlador
+cuando el usuario presiona un boton o se ejecuta un comando del menu o se quiere cerrar la ventana.
+En otros palabras esta clase es el medio de comunicacion entre la ventana principal y el controller

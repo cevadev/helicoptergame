@@ -7,17 +7,19 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 
-public class Prueba2 extends JFrame {
+public class MainFrame extends JFrame {
+    private LevelView mainPanel;
+    private StatusBarView statusBar;
     private final Dimension preferredSize = new Dimension(640, 480);
-    public Prueba2(){
-        super();
+    public MainFrame(){
+        super("Level Editor");
         initComponents();
     }
 
     private void initComponents() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.BLACK);
-        mainPanel.setPreferredSize(preferredSize);
+        //JPanel mainPanel = new JPanel();
+        //mainPanel.setBackground(Color.BLACK);
+        //mainPanel.setPreferredSize(preferredSize);
 
         // hacemos que el right panel se divida en 2 para contener al UP y Down right panel
         JPanel rightPanel = new JPanel(new GridLayout(2, 1));
@@ -29,12 +31,17 @@ public class Prueba2 extends JFrame {
         rightPanel.add(rightUpPanel);
         rightPanel.add(rightDnPanel);
 
-        JPanel statusPanel = new JPanel();
-        statusPanel.setPreferredSize(new Dimension(mainPanel.getPreferredSize().width, 50));
+        mainPanel = new LevelView();
 
+        //JPanel statusPanel = new JPanel();
+        //statusPanel.setPreferredSize(new Dimension(mainPanel.getPreferredSize().width, 50));
+
+        statusBar = new StatusBarView();
+        statusBar.setLevelView(mainPanel);
+        statusBar.setPreferredSize(new Dimension(preferredSize.width, 50));
         //add(mainPanel, BorderLayout.CENTER);
 
-
+        mainPanel.setStatusBar(statusBar);
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(mainPanel);
         scrollPane.setPreferredSize(preferredSize);
@@ -42,6 +49,9 @@ public class Prueba2 extends JFrame {
         JButton btnFree = new JButton("Free");
         JButton btnLine = new JButton("Line");
         JButton btnHeli = new JButton("Heli");
+        btnFree.addActionListener((e) -> mainPanel.getController().setCurrentTool(LevelEditorModel.TOOL_FREE));
+        btnLine.addActionListener((e) -> mainPanel.getController().setCurrentTool(LevelEditorModel.TOOL_LINE));
+        btnHeli.addActionListener((e) -> mainPanel.getController().setCurrentTool(LevelEditorModel.TOOL_HELI));
 
         // centramos los componentes
         btnFree.setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -71,6 +81,8 @@ public class Prueba2 extends JFrame {
         rightDnPanel.setLayout(new BoxLayout(rightDnPanel, BoxLayout.Y_AXIS));
         JRadioButton chkUp = new JRadioButton("Up");
         JRadioButton chkDn = new JRadioButton("Down");
+        chkUp.addActionListener((e) -> mainPanel.getController().setUpOrDown(chkUp.isSelected()));
+        chkDn.addActionListener((e) -> mainPanel.getController().setUpOrDown(chkUp.isSelected()));
         chkUp.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         chkDn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         Misc.makeSameSize(chkUp, chkDn);
@@ -82,45 +94,64 @@ public class Prueba2 extends JFrame {
         rightDnPanel.add(chkDn);
         rightDnPanel.add(Box.createHorizontalStrut(chkUp.getPreferredSize().width + 8));
 
-        add(rightPanel, BorderLayout.LINE_END);
-        add(statusPanel, BorderLayout.SOUTH);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         add(scrollPane, BorderLayout.CENTER);
+        add(statusBar, BorderLayout.SOUTH);
+        add(rightPanel, BorderLayout.LINE_END);
         // aplicamos un cast al Container general
         ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         initMenu();
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                onQuit();
+            }
+        });
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setMinimumSize(getSize());
         setLocationRelativeTo(null);
+    }
+
+    private void onQuit() {
+        if (mainPanel.getController().validateClose())
+            dispose();
     }
 
     private void initMenu() {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("File");
-        fileMenu.add(Misc.createMenuItem("Create new level...", KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK, null));
-        fileMenu.add(Misc.createMenuItem("Load...",             KeyEvent.VK_F3, 0, null));
-        fileMenu.add(Misc.createMenuItem("Save",                KeyEvent.VK_F2, 0, null));
-        fileMenu.add(Misc.createMenuItem("Save As...",          null));
+        fileMenu.add(Misc.createMenuItem("Create new level...", KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK, (e) -> mainPanel.getController().createNewLevel()));
+        fileMenu.add(Misc.createMenuItem("Load...",             KeyEvent.VK_F3, 0, (e) -> mainPanel.getController().doLoad()));
+        fileMenu.add(Misc.createMenuItem("Save",                KeyEvent.VK_F2, 0, (e) -> mainPanel.getController().doSave()));
+        fileMenu.add(Misc.createMenuItem("Save As...",          (e) -> mainPanel.getController().doSaveAs()));
         fileMenu.add(new JPopupMenu.Separator());
-        fileMenu.add(Misc.createMenuItem("Quit",                KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK, null));
+        fileMenu.add(Misc.createMenuItem("Quit",                KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK, (e) -> onQuit()));
 
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
     }
-
-    public static void main(String[] args) {
-        try{
-            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch (Exception ex){
-            System.out.println(ex.getClass().getName() + " generated: " + ex.getMessage());
-        }
-
-        SwingUtilities.invokeLater(()->{
-            Prueba2 frame = new Prueba2();
-            frame.setVisible(true);
-        });
+    public LevelView getView() {
+        return mainPanel;
     }
+
+    public StatusBarView getStatusBar() {
+        return statusBar;
+    }
+
+//    public static void main(String[] args) {
+//        try{
+//            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        }catch (Exception ex){
+//            System.out.println(ex.getClass().getName() + " generated: " + ex.getMessage());
+//        }
+//
+//        SwingUtilities.invokeLater(()->{
+//            MainFrame frame = new MainFrame();
+//            frame.setVisible(true);
+//        });
+//    }
 }
