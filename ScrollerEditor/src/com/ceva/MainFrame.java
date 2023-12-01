@@ -17,10 +17,6 @@ public class MainFrame extends JFrame {
     }
 
     private void initComponents() {
-        //JPanel mainPanel = new JPanel();
-        //mainPanel.setBackground(Color.BLACK);
-        //mainPanel.setPreferredSize(preferredSize);
-
         // hacemos que el right panel se divida en 2 para contener al UP y Down right panel
         JPanel rightPanel = new JPanel(new GridLayout(2, 1));
         JPanel rightUpPanel = new JPanel();
@@ -103,6 +99,7 @@ public class MainFrame extends JFrame {
 
         initMenu();
         addWindowListener(new WindowAdapter() {
+            // si el user cierra la ventana preguntamos si quiere guardar los cambios
             @Override
             public void windowClosing(WindowEvent e) {
                 onQuit();
@@ -142,16 +139,4 @@ public class MainFrame extends JFrame {
         return statusBar;
     }
 
-//    public static void main(String[] args) {
-//        try{
-//            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        }catch (Exception ex){
-//            System.out.println(ex.getClass().getName() + " generated: " + ex.getMessage());
-//        }
-//
-//        SwingUtilities.invokeLater(()->{
-//            MainFrame frame = new MainFrame();
-//            frame.setVisible(true);
-//        });
-//    }
 }

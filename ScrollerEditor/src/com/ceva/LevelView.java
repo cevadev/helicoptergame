@@ -15,6 +15,9 @@ import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
+/**
+ * Representa la vista donde se crear lo niveles
+ */
 public class LevelView extends JPanel implements Scrollable, ModelObserver {
     private LevelEditorModel model;
     private LevelEditorController controller;
@@ -28,6 +31,9 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
         super();
 
         setFocusable(true);
+        /**
+         * La vista al detectar una accion de usuario la reportamos al controlador
+         */
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

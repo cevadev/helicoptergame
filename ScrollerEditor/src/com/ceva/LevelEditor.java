@@ -1,6 +1,10 @@
 package com.ceva;
 
 import javax.swing.UIManager;
+
+/**
+ * Clase que maneja la referencias a las vistas
+ */
 public class LevelEditor {
     public static void main(String args[]) {
         try {
@@ -14,9 +18,9 @@ public class LevelEditor {
 
             // creamos el modelo
             LevelEditorModel model = new LevelEditorModel();
-            // creamos la vista
+            // creamos la vista principal
             LevelEditorView view = new LevelEditorView();
-            // pasamos al controlador model y view
+            // el controlador se encarga de resolver todas las dependecias entre model view y controller
             LevelEditorController controller = new LevelEditorController(model, view);
             controller.start();
         });

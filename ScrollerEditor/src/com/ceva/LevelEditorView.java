@@ -19,7 +19,7 @@ public class LevelEditorView {
     }
 
     public void setModel(LevelEditorModel model) {
-        levelView.setModel(model);
+        levelView.setModel(model);// asignamos el modelo a todas las vistas
         statusBar.setModel(model);
     }
 

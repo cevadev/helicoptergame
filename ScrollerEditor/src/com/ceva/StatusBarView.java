@@ -46,6 +46,7 @@ public class StatusBarView extends JPanel {
         int y = fm.getAscent();
         g2d.drawString(sb.toString(), x, y);
         if (levelView != null) {
+            // obtenemos el ancho de la ventana
             String str = String.format("view width: %d", levelView.getVisibleRect().width);
             y += fm.getHeight();
             g2d.drawString(str, x, y);

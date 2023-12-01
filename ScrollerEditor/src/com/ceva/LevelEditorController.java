@@ -18,8 +18,7 @@ public class LevelEditorController {
     private EventController lineController;
 
     /**
-     *  y tambien del
-     * del
+     *  El controlador no dependen de objetos de tipo JFrame
      */
     public LevelEditorController(LevelEditorModel model, LevelEditorView view) {
         // guardamos una referencia al model y view
@@ -30,14 +29,13 @@ public class LevelEditorController {
         init();
     }
 
-    // establecemos las referencias al model y controller
+    // establecemos las referencias al model y controller. Resolvemos lo que hace el constructor
     private void init() {
-        view.setModel(model);
-        view.setController(this);
+        view.setModel(model); // a la vista le pasamos el modelo
+        view.setController(this); // a la vista le pasamos el controlador
 
         // por medio de observers el model informa cuando han ocurrido cambios
-        // la vista es un observador del modelo
-        model.addObserver(levelView);
+        model.addObserver(levelView);// relacionamos el modelo con la vista
         setUpOrDown(true);
 
         // guardamos la instancia de un objto JFileChooser para utilizarlos
@@ -71,9 +69,9 @@ public class LevelEditorController {
         } else
             curController = null;
 
-        view.updateStatusBar();
+        view.updateStatusBar();// re dibujamos statusBar
         if (curController != null)
-            view.requestFocusInWindow();
+            view.requestFocusInWindow();// reconocemos los eventos del teclado
     }
 
     protected void createNewLevel() {
@@ -82,7 +80,7 @@ public class LevelEditorController {
             return;
 
         CreateLevelDialog dlg = view.createLevelDialog();
-        dlg.setVisible(true);
+        dlg.setVisible(true);// hacemos visible el dialogo
         if (!dlg.wasCancelled()) {
             // Create a new level
             model.createLevel(dlg.getNSeconds());
@@ -115,11 +113,13 @@ public class LevelEditorController {
 
     public boolean doSave() {
         if (model.currentFile == null) {
+            // usamos la instancia de FileChooser creada
             int returnVal = fc.showSaveDialog(view.getMainFrame());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File f = fc.getSelectedFile();
                 System.out.println("Save to file: " + f);
                 if (f.exists()) {
+                    // le pasamos a la vista la funcionalidad
                     if (view.yesNoConfirmation("¿Deseas sobreescribir el archivo?") != JOptionPane.NO_OPTION)
                         return false;
                 }
