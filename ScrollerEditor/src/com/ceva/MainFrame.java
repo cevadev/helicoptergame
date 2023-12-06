@@ -45,6 +45,7 @@ public class MainFrame extends JFrame {
         JButton btnFree = new JButton("Free");
         JButton btnLine = new JButton("Line");
         JButton btnHeli = new JButton("Heli");
+        // al hacer click en algun boton llamamos al metodo setCurrentTool() del controller
         btnFree.addActionListener((e) -> mainPanel.getController().setCurrentTool(LevelEditorModel.TOOL_FREE));
         btnLine.addActionListener((e) -> mainPanel.getController().setCurrentTool(LevelEditorModel.TOOL_LINE));
         btnHeli.addActionListener((e) -> mainPanel.getController().setCurrentTool(LevelEditorModel.TOOL_HELI));

@@ -16,7 +16,7 @@ import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
 /**
- * Representa la vista donde se crear lo niveles
+ * Representa la vista donde se crear lo niveles. Es un JPanel que esta dentro de una JScrollPane
  */
 public class LevelView extends JPanel implements Scrollable, ModelObserver {
     private LevelEditorModel model;
@@ -24,7 +24,8 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
     StatusBarView statusBar;
     Dimension maxDimension = new Dimension(0, 0);
     Dimension curDimension = new Dimension(maxDimension);
-    int curMouseX; // Coordenadas para dibujar en pantalla.
+    // Coordenadas que indican la posicion del raton y se muestra en el statuspanel
+    int curMouseX;
     int curMouseY;
 
     public LevelView() {
@@ -55,14 +56,18 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
             public void mouseExited(MouseEvent e) {
                 controller.mouseExited(e);
             }
+            // se ejecuta cuando movemos el raton sobre la pantalla, sin presionar boton del mouse
             @Override
             public void mouseMoved(MouseEvent e) {
+                // guardamos la posicion del raton
                 curMouseX = e.getX();
                 curMouseY = e.getY();
                 controller.mouseMoved(curMouseX, curMouseY);
             }
+            // se ejecuta cuando arrastramos el raton sobre la pantalla presionando el boton izq del mouse
             @Override
             public void mouseDragged(MouseEvent e) {
+                // guardamos la posicion del raton
                 curMouseX = e.getX();
                 curMouseY = e.getY();
                 controller.mouseDragged(e);
@@ -102,9 +107,11 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
         maxDimension.width = width;
         maxDimension.height = height;
 
+        // metodo de swing: informamos de que tamano queremos que sea ahora el JPanel
         setPreferredSize(maxDimension);
+        // metodo de swing: se recalculan el tamano de los componentes de la ventana
         revalidate();
-        repaint();
+        repaint(); // se vuelve a dibujar el componente
     }
 
     private void paintEditingGround(Graphics2D g2d) {
@@ -146,7 +153,8 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.BLACK); //limpiamos la pantalla
+        //obtenemos el rectangulo que define el area de la ventana que se encuentra visible
         Rectangle visibleRect = getVisibleRect();
         g2d.fillRect(visibleRect.x, visibleRect.y, visibleRect.width, visibleRect.height);
 
@@ -158,6 +166,7 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
             int len = visibleRect.width;
             if (len > model.levelH.length)
                 len = model.levelH.length;
+            // dibujamos terreno
             for (int n=visibleRect.x; n<(visibleRect.x + len); n++) {
                 g2d.drawLine(n, 0, n, model.levelH[n]);
                 g2d.drawLine(n, model.levelL[n], n, model.maxHeight);
@@ -166,10 +175,11 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
             // Editor de terreno
             paintEditingGround(g2d);
 
-            // Enemigos
+            // Para cada elemento dibujamos la imagen del Enemigos
             if (model.foes != null) {
                 Foe foe = model.foes;
                 while (foe != null) {
+                    // verificamos que sus coordenadas se encuentren dentro del area visible de pantalla
                     if ((foe.x >= visibleRect.x-model.heliImage.getWidth()) && (foe.x <= (visibleRect.x + visibleRect.width))) {
                         if (foe.type == Foe.FOE_TYPE_HELI) {
                             g2d.drawImage(model.heliImage, foe.x, foe.y, null);

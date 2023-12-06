@@ -6,12 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="eedc24e0-2171-483a-9c42-01f23771bdfd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ceva/LevelEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/LevelEditor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ceva/HeliController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/HeliController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ceva/LevelEditorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/LevelEditorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ceva/LevelEditorView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/LevelEditorView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/ceva/LevelEditorModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/LevelEditorModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ceva/LevelView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/LevelView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/ceva/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ceva/StatusBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ceva/StatusBarView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +99,8 @@
       <workItem from="1699989818641" duration="2163000" />
       <workItem from="1701187641444" duration="7094000" />
       <workItem from="1701270377336" duration="11869000" />
-      <workItem from="1701443103220" duration="10042000" />
+      <workItem from="1701443103220" duration="13541000" />
+      <workItem from="1701806263827" duration="6438000" />
     </task>
     <servers />
   </component>

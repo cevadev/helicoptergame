@@ -5,6 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+/**
+ * Punto de inicio de la application
+ * LevelEditorController configura el modelo, la vista, y muestra la ventana principal
+ */
 public class LevelEditorController {
     protected LevelEditorModel model; // refrencia al modelo
     protected LevelEditorView view; // refrencia a la vista
@@ -53,12 +58,18 @@ public class LevelEditorController {
         lineController = new LineToolController(levelView, model);
     }
 
+    /**
+     * metod que coloca la variable curController al controlador secundario que le corresponde
+     * @param currentTool
+     */
     public void setCurrentTool(int currentTool) {
+        // validamos si el nivel esta vacio
         if (model.levelH == null)
             return;
         model.currentTool = currentTool;
         if (currentTool == LevelEditorModel.TOOL_HELI) {
             curController = heliController;
+            // llamamos al metodo init() del controlador secundario heliController
             ((HeliController)heliController).init();
         } else if (currentTool == LevelEditorModel.TOOL_FREE) {
             curController = freeController;
@@ -77,12 +88,15 @@ public class LevelEditorController {
     protected void createNewLevel() {
         // Crear un nuevo nivel.
         if (!validateClose())
-            return;
+            return; // si no es posible borrar lo que se encuentra en edicion, se cancela la accion
 
+        // aparece ventana de dialogo que pregunta el nro de segundo que tendra el nivel
         CreateLevelDialog dlg = view.createLevelDialog();
         dlg.setVisible(true);// hacemos visible el dialogo
+        // validamos si el user cancelo el dialogo
         if (!dlg.wasCancelled()) {
-            // Create a new level
+            // Si no cancelo el dialogo entonces Create a new level
+            // le pedimos al modelo que cree el nivel porque es el modelo quien tiene la info del nivel
             model.createLevel(dlg.getNSeconds());
         }
     }
@@ -178,15 +192,18 @@ public class LevelEditorController {
     }
 
     /*
-    mouseMoved sucede cuando el mouse pasa por el view sin que los botones
+    mouseMoved sucede cuando el mouse pasa por el view sin que los botones mouse
     esten presionados.
     */
     public void mouseMoved(int x, int y) {
         view.updateStatusBar();
+        // validamos si existe un controlador en curController y se encarga del evento
         if ((curController != null) && curController.mouseMoved(x, y))
-            return;
+            return; // metodo finaliza
 
         if (model.foes != null) {
+            // vemos si hay un helicopter en la posicion actual del raton con model.findFoe(), si es asi
+            // guardamos la referencia en la variable highLightedFoe
             model.setHighlightedFoe(model.findFoe(x, y));
         }
     }
@@ -226,9 +243,10 @@ public class LevelEditorController {
     mouse clicked se genera cuando se presiona y se suelta el boton.
     */
     public void mouseClicked(java.awt.event.MouseEvent evt) {
+        // si curController interpreta el evento, el metodo finaliza
         if ((curController != null) && curController.mouseClicked(evt))
             return;
-
+        // como esta seleccionado heliController ejecutara su metodo mouseClick()
         Foe f = model.findFoe(evt.getX(), evt.getY());
         if (model.selectedFoe != f) {
             model.setSelectedFoe(f);
@@ -274,15 +292,25 @@ public class LevelEditorController {
         view.getMainFrame().setVisible(true);
     }
 
+    /*
+     * funcion que retorna true si es posible en ese momentoborrar lo que se encuentre
+     * en edicion. Si retorna false, entonce se cancela la ejecucion del comando
+     */
     protected boolean validateClose() {
+        // validamos si model.dirty es true, que indica que se hicieron cambios en el nivel
         if (model.dirty) {
+            // informamos al usuario de cambios pendientes
+            // yes - queremos guardar antes de continuar
+            // no - queremos continuar y no importa perder los cambios
+            // cancel - ya no queremos continuar con la creacion
             int confirm = view.yesNoCancelConfirmation("¿Deseas guardar los cambios?", "Salir");
             if (confirm == JOptionPane.YES_OPTION) {
+                // doSave() retorna false si la operacion de guardar el nivel no se puedo realizar
                 if (!doSave())
                     return false;
             } else if (confirm == JOptionPane.CANCEL_OPTION)
                 return false;
         }
-        return true;
+        return true; // se ha guardado correctamente los datos, y se puede borrar info del nivel
     }
 }

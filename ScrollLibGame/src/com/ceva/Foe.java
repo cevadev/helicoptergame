@@ -29,7 +29,7 @@ public class Foe {
     public int health; // cuantas balas tendra que recibir para ser destruido
     public boolean disabledFire;
 
-    public Foe next;
+    public Foe next; // refrencia al sgte elemento (enemigo)
 
     public Foe() {
     }
@@ -60,18 +60,27 @@ public class Foe {
         return level;
     }
 
+    /**
+     * agregamos un enemigo a la lista enlazada de enemigos
+     * @param foe - enemigo a agregar
+     * @param root - inicio de la lista enlazada
+     * @return
+     */
     public static Foe addFoe(Foe foe, Foe root) {
         Foe ins;
+        // validamos si no hay lista
         if (root == null) {
             foe.next = null;
             return foe;
         } else {
             ins = root;
             Foe prev = null;
+            // recorremos la lista
             while ((ins.next != null) && (ins.x < foe.x)) {
-                prev = ins;
+                prev = ins;// guardamos referencia al elemento actual
                 ins = ins.next;
             }
+            // validamos si llegamos al final de la lista
             if (ins.x < foe.x) {
                 foe.next = ins.next;
                 ins.next = foe;

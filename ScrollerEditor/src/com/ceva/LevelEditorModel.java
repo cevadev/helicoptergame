@@ -32,13 +32,14 @@ public class LevelEditorModel {
     public int tmpLevelDataX;
     public boolean upOrDown;
 
-    public Foe foes = null;           // Lista de enemigos
-    public Foe highlightedFoe = null; // Enemigo resaltado
-    public Foe selectedFoe = null;    // Enemigo seleccionado
+    public Foe foes = null;           // Lista enlazada de enemigos
+    public Foe highlightedFoe = null; // contiene referencia al helicoptero resaltado
+    public Foe selectedFoe = null;    // contiene referencia al helicoptero seleccionado
     public int currentTool;
+    // coordenadas donde se dibujara un helicoptero temporal
     public int curSpriteX;
     public int curSpriteY;
-    public final int maxHeight = 480;
+    public final int maxHeight = 480; // tamano vertical maximo de la pantalla
     protected boolean dirty;
     protected File currentFile = null;
 
@@ -66,7 +67,9 @@ public class LevelEditorModel {
     }
 
     private void notifyMaxDimension(int width) {
+        // recorremos la lista de observadores
         for (ModelObserver observer : observers)
+            // notificamos el cambio del nivel a cada uno de ellos
             observer.setMaxDimension(width, maxHeight);
     }
 
@@ -82,6 +85,7 @@ public class LevelEditorModel {
 
     public void setHighlightedFoe(Foe foe) {
         highlightedFoe = foe;
+        // informamos a todas las vistas registradas que deben redibujarse
         notifyRepaint();
     }
 
@@ -150,6 +154,14 @@ public class LevelEditorModel {
         return false;
     }
 
+    /**
+     * Buscamos un objeto (helicopter) en una determinada coordenada
+     * Recorremos la lista enlazada foes para verificar si el punto x,y
+     * se encuentra dentro del rectangulo del enemigo
+     * @param x
+     * @param y
+     * @return
+     */
     public Foe findFoe(int x, int y) {
         Foe f = foes;
         while (f != null) {
@@ -161,28 +173,41 @@ public class LevelEditorModel {
         return null;
     }
 
+    /**
+     *
+     * @param sizeInSecs - tamano del nivel en segundos
+     */
     public void createLevel(int sizeInSecs) {
-        levelH = new short[sizeInSecs*60];
-        levelL = new short[levelH.length];
+        levelH = new short[sizeInSecs*60]; // nivel de arriba (info del terreno superior)
+        levelL = new short[levelH.length]; // nivel de abajo (info del terreno inferior)
 
         int n = 0;
+        // curY es igual al alto de la pantalla
         short curY = (short) (maxHeight-1);
+        // creamos el terreno inferior.
         while (n < levelL.length) {
+            // en cada iteracion se genera un numero aleatorio entre -5 y 5, y se le incrementa a curY
+            // esto genera un terreno aleatorio
             curY += Util.rand_range(-5, 5);
+            // validaciones de seguridad
             if (curY < 0)
                 curY = 0;
             else if (curY > maxHeight)
                 curY = (short) maxHeight;
-
+            // guardamos la informacion
             levelL[n++] = curY;
         }
 
         n = 0;
         curY = 0;
+        // creamos el terreno superior
         while (n < levelH.length) {
             curY += Util.rand_range(-5, 5);
-
+            /*
+             * verificamos que la distancia entre levelH y levelL no se traslapen
+             */
             if ((curY + (maxHeight - levelL[n]) + 60) >= maxHeight)
+                // si se traslapan, ajustamos curY para que tenga una distancia de 60px
                 curY = (short) (levelL[n] - 60);
 
             if (curY < 0)
@@ -194,9 +219,12 @@ public class LevelEditorModel {
         }
 
         foes = null;
-
+        // modelo informa a todos los observer que la dimension del nivel ha cambiado
         notifyMaxDimension(levelH.length);
         currentFile = null;
+        // variable que indica si el nivel ha sido modificado, True indica que ha cambiado el nivel
+        // cuando se quiera crear otro nivel, primero se alerta al usuario que hay cambios pendientes
+        // por guardar
         dirty = true;
     }
 
@@ -328,6 +356,7 @@ public class LevelEditorModel {
     public void addFoe(int x, int y) {
         Foe foe = new Foe(x, y, Foe.FOE_TYPE_HELI, Foe.FOE_AI_STRAIGHT);
         foes = Foe.addFoe(foe, foes);
+        // informamos que los datos del modelo han cambiado
         setDirty();
     }
 
