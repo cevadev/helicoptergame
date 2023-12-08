@@ -81,6 +81,7 @@ public class HeliController extends EventController {
         if (model.selectedFoe != null) {
             // Reordenar foe
             model.reOrderFoe(model.selectedFoe);
+            // deshabilitamos la herramienta actual
             mainController.setCurrentTool(LevelEditorModel.TOOL_NONE);
         }
         model.selectedFoe = null;

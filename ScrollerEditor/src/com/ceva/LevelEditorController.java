@@ -72,6 +72,7 @@ public class LevelEditorController {
             // llamamos al metodo init() del controlador secundario heliController
             ((HeliController)heliController).init();
         } else if (currentTool == LevelEditorModel.TOOL_FREE) {
+            // cuando user selecciona el boton free, freeController pasa a ser el curController
             curController = freeController;
             ((FreeToolController)curController).reset();
         } else if (currentTool == LevelEditorModel.TOOL_LINE) {
@@ -102,10 +103,12 @@ public class LevelEditorController {
     }
 
     public void doLoad() {
+        // validamos si es seguro cargar el nuevo nivel y descartar los datos actuales
         if (!validateClose())
             return;
 
         File curDir = fc.getCurrentDirectory();
+        // mostramos el dialog en modo abrir archivo
         int returnVal = fc.showOpenDialog(view.getMainFrame());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
@@ -114,6 +117,7 @@ public class LevelEditorController {
                 model.load(f);
 
                 if (!curDir.equals(fc.getCurrentDirectory())) {
+                    // guardamos el directorio que el user selecciono
                     AppSettings.getInstance()
                             .setString("scrollerEditor.curDir", fc.getCurrentDirectory().getAbsolutePath())
                             .save();
@@ -125,15 +129,23 @@ public class LevelEditorController {
         }
     }
 
+    // Guardamos un nivel
     public boolean doSave() {
+        // el campo currentFile del modelo indica cual es archivo que se esta editando
+        // si currentFile es null significa que el archivo aun no existe
         if (model.currentFile == null) {
             // usamos la instancia de FileChooser creada
+            // retornamos la respuesta del usuario
             int returnVal = fc.showSaveDialog(view.getMainFrame());
+            // validamos si la respuesta fue un APPROVE_OPTION significa que el user selecciono un archivo
+            // y presiono el boton de guardar
             if (returnVal == JFileChooser.APPROVE_OPTION) {
+                // obtenemos el archivo seleccionado en un objeto de tipo File
                 File f = fc.getSelectedFile();
                 System.out.println("Save to file: " + f);
+                // validamos si el archivo ya existe
                 if (f.exists()) {
-                    // le pasamos a la vista la funcionalidad
+                    // si elarchivo ya existe, le preguntamos si quiere sobrescribir el archivo
                     if (view.yesNoConfirmation("¿Deseas sobreescribir el archivo?") != JOptionPane.NO_OPTION)
                         return false;
                 }
@@ -147,9 +159,9 @@ public class LevelEditorController {
                 }
             }
         } else {
-            // Ya existe el archivo
+            // model.currentFile Ya tiene archivo
             try {
-                model.save(model.currentFile);
+                model.save(model.currentFile); // el usuario esta guardando sus cambios
                 return true;
             } catch (IOException e) {
                 System.out.println(e.getClass().getName() + " generated: " + e.getMessage());
@@ -178,15 +190,18 @@ public class LevelEditorController {
         }
     }
 
+    // editamos las propiedades del enemgio
     private void configFoe(Foe foe) {
         DlgSetupFoe dlg = new DlgSetupFoe(view.getMainFrame());
 
         dlg.setAI(foe.ai);
-        dlg.setStrength(foe.strengthLevel());
-        dlg.setDisabledFire(foe.disabledFire);
+        dlg.setStrength(foe.strengthLevel()); // establecemos la fuerza del enemigo
+        dlg.setDisabledFire(foe.disabledFire);// deshabilitammos los disparos
         dlg.setVisible(true);
 
+        // validamos que el no se haya seleccionado el boton cancel
         if (!dlg.wasCancelled()) {
+            // obtenemos los valores del dialog y lo almacenamos en el foe
             model.updateFoe(foe, dlg.getAI(), dlg.getStrength(), dlg.getDisabledFire());
         }
     }
@@ -212,11 +227,16 @@ public class LevelEditorController {
     El boton ha sido presionado (no es un evento click).
     */
     public void mousePressed(java.awt.event.MouseEvent evt) {
+        // si no hay herramienta seleccionada (TOOL_FREE, TOOL_LINE, TOOL_HELI)
+        // entonces curController no maneja el evento. Pero si hay una herramienta seleccionada
+        // llamamos al metodo mousePressed de dicha herramienta.
         if ((curController != null) && curController.mousePressed(evt))
             return;
-
+        // validamos que el enemigo no se haya seleccionado
         if (model.highlightedFoe != null) {
+            // seleccionamos la herramienta TOOL:HELI
             setCurrentTool(LevelEditorModel.TOOL_HELI);
+            // selecciona herramienta heli, , heliController maneja el evento
             heliController.mousePressed(evt);
         }
     }
@@ -247,13 +267,16 @@ public class LevelEditorController {
         if ((curController != null) && curController.mouseClicked(evt))
             return;
         // como esta seleccionado heliController ejecutara su metodo mouseClick()
+        // buscamos si hay un enemigo en la posicion del raton
         Foe f = model.findFoe(evt.getX(), evt.getY());
         if (model.selectedFoe != f) {
+            // seleccionamos y resaltamos al enemigo
             model.setSelectedFoe(f);
             model.setHighlightedFoe(f);
         }
-
+        // validamos si es un doble click
         if ((evt.getClickCount() == 2) && (model.highlightedFoe != null)) {
+            // al hacer doble click al enemigo, permitimos editar las propiedades del enemigo
             configFoe(model.highlightedFoe);
         }
     }
@@ -269,13 +292,16 @@ public class LevelEditorController {
     }
 
     public void keyTyped(KeyEvent evt) {
+        // el user presiono scape se hace un reset el controlador, sin importar cual sea
         if (evt.getKeyChar() == KeyEvent.VK_ESCAPE) {
             if (curController != null)
                 curController.reset();
-            model.setSelectedFoe(null);
-        } else if (((evt.getKeyChar() == KeyEvent.VK_BACK_SPACE) || (evt.getKeyChar() == KeyEvent.VK_DELETE)) &&
+            model.setSelectedFoe(null); // informamos que se redibuje la vista
+        }
+        // si se presiona backespace o delete y selected foe null
+        else if (((evt.getKeyChar() == KeyEvent.VK_BACK_SPACE) || (evt.getKeyChar() == KeyEvent.VK_DELETE)) &&
                 (model.selectedFoe != null)) {
-            model.removeFoe(model.selectedFoe);
+            model.removeFoe(model.selectedFoe); // eliminamos al enemigo
         }
     }
 

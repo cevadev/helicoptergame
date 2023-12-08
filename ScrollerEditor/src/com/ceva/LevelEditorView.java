@@ -63,25 +63,30 @@ public class LevelEditorView {
         return JOptionPane.showConfirmDialog(mainFrame, message, confirmTitle, JOptionPane.YES_NO_CANCEL_OPTION);
     }
 
+    // configuramos una instancia del control JFileChooser a devolver
     public JFileChooser getFileChooser() {
         JFileChooser res = new JFileChooser();
+        // configuramos un filtro
         res.setFileFilter(new FileFilter() {
-            // filtramos los archivos que queremos mostrar (.DAT)
+            // aceptamos todos los archivo si son directory o de tipo .DAT
             @Override
             public boolean accept(File f) {
                 return f.isDirectory() || f.getName().toUpperCase().endsWith(".DAT");
             }
 
+            // descripcion que aparecera en el combo de seleccionar el tipo de archivo
             @Override
             public String getDescription() {
                 return ".DAT files";
             }
         });
-        // guardamos el ultimo directorio guardado por el usuario
+        // obtenemos el ultimo directorio seleccionado por el usuario
         String strCurDir = AppSettings.getInstance().getString("scrollerEditor.curDir");
         if (strCurDir != null) {
             File f = new File(strCurDir);
             if (f.exists() && f.isDirectory()) {
+                // hacemos que JFileChooser se cambie a la info del directorio seleccionado
+                // asi el usuario se encuentra en el ultimo directorio seleccionado
                 res.setCurrentDirectory(f);
             }
         }

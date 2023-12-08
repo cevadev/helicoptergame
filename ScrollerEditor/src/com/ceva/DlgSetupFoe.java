@@ -129,6 +129,7 @@ public class DlgSetupFoe extends JDialog {
     }
 
     public void setAI(int ai) {
+        // inicializamos los controles del dialog con los datos del objeto enemigo
         if (ai == Foe.FOE_AI_STRAIGHT) {
             cboAI.setSelectedItem("STRAIGHT");
         } else if (ai == Foe.FOE_AI_YFOLLOW) {

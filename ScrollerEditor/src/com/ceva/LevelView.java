@@ -33,7 +33,11 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
 
         setFocusable(true);
         /**
-         * La vista al detectar una accion de usuario la reportamos al controlador
+         * Cuando el usuario hace click el evento llega al LevelView
+         * LevelView al detectar una accion de usuario  con el mouse la reportamos al controlador.
+         * Cuando el usuario hace click a un enemigo los eventos que se disparan son
+         * mousePressed, mouseClick, mouseRelease, esto ocurre cuando no hay ninguna herramienta
+         * seleccionada. LevelView solo le pasa el mensaje al controlador principal LevelEditorController
          */
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -75,6 +79,7 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
         };
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
+        // listener de LevelView que le pasa la tecla presionada al controller
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -114,27 +119,44 @@ public class LevelView extends JPanel implements Scrollable, ModelObserver {
         repaint(); // se vuelve a dibujar el componente
     }
 
+    /**
+     * Metodo que dibuja el terreno basado a en la informacion guardada en tmpLevelData
+     */
     private void paintEditingGround(Graphics2D g2d) {
         // Paint editing information
         if (model.tmpLevelDataLen == 0)
             return;
         g2d.setColor(Color.WHITE);
 
+        // visibleRect representa el area visible del escenario que se dibuja
         Rectangle visibleRect = getVisibleRect();
+        /**
+         * determinamos si se necesita o no dibujar la info
+         * Si model.tmpLevelDataX es menor a la maxima coordenada (x visible) y
+         * la maxima coordenada de model.tmpLevelData visible es decir
+         * model.tmpLevelDataX + model.tmpLevelDataLen es mayor igual a la coordenada x minima visible
+         * Para dibujar: hacemos drawLine de y=0 para cada coordenada de tmpLevelData si upOrDown
+         * es igual a true
+         */
         if ((model.tmpLevelDataX < (visibleRect.x+visibleRect.width)) && ((model.tmpLevelDataX + model.tmpLevelDataLen) >= visibleRect.x)) {
-            int n = 0;
-            int x = model.tmpLevelDataX;
-            int size = model.tmpLevelDataLen;
+            int n = 0; // indice de tmpLevelData
+            int x = model.tmpLevelDataX; // coordenada horizontal donde se hara la linea
+            int size = model.tmpLevelDataLen; // nro de linea a dibujar
             if (x < visibleRect.x) {
-                n = visibleRect.x - model.tmpLevelDataX;
+                // no dibujamos del inicio de tmpLevelData, sino que saltamos la distancia no visible
+                n = visibleRect.x - model.tmpLevelDataX; // satamos la distancia no visible
+                // modificamos el valor de x para dibujar a partir del area visible
                 x = visibleRect.x;
-                size -= n;
+                size -= n; // recortamos lo que pueda estar a la izquiera del area visible
             }
+            // validamos si exista un area invisible despues de visibleRect.x
             if ((x + size) >= (visibleRect.x + visibleRect.width)) {
+                // restamos el espacio que ya no es visible despues de visbleRect.x
                 size -= (x + size) - (visibleRect.x + visibleRect.width);
             }
 
             if (model.upOrDown) {
+                // dibujamos mientras size es mayor a 0
                 while (size > 0) {
                     g2d.drawLine(x, 0, x, model.tmpLevelData[n++]);
                     x++;

@@ -20,12 +20,19 @@ public class Util {
         return (x + (rand() % (y - x + 1)));
     }
 
+    /*
+     * convertimos el contenido del int que recibimos como parametro a 12 bits
+     */
     public static int intTo12Bit(int n) {
         n = n & 0xfff;
         return n;
     }
 
+    /*
+     * el bit 12 determina el signo del numero
+     */
     public static int cvt12BitToInt(int n) {
+        // validamos si se trata d un numero negativo de 12 bits
         if ((n & 0x800) != 0) {
             n = (~n + 1) & 0xfff;
             return -n;
